@@ -93,13 +93,13 @@ class TransportWsEvent {
   const TransportWsEvent.connecting()
       : type = TransportWsEventType.connecting,
         socket = null,
-        payload = null,
+        payload = const {},
         received = null,
         message = null,
         event = null;
   const TransportWsEvent.opened(WebSocketChannel this.socket)
       : type = TransportWsEventType.opened,
-        payload = null,
+        payload = const {},
         received = null,
         message = null,
         event = null;

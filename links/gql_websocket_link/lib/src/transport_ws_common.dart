@@ -118,7 +118,8 @@ class ConnectionInitMessage extends Message {
   MessageType get type => MessageType.connection_init;
   final Map<String, Object?>? payload;
   @override
-  Map<String, Object?> toJson() => {"type": type.name, "payload": payload};
+  Map<String, Object?> toJson() =>
+      nonNullPayloadJson({"type": type.name}, payload);
 }
 
 /// @category Common */
@@ -129,7 +130,8 @@ class ConnectionAckMessage extends Message {
   MessageType get type => MessageType.connection_ack;
   final Map<String, Object?>? payload;
   @override
-  Map<String, Object?> toJson() => {"type": type.name, "payload": payload};
+  Map<String, Object?> toJson() =>
+      nonNullPayloadJson({"type": type.name}, payload);
 }
 
 /// @category Common */
@@ -140,7 +142,8 @@ class PingMessage extends Message {
   MessageType get type => MessageType.ping;
   final Map<String, Object?>? payload;
   @override
-  Map<String, Object?> toJson() => {"type": type.name, "payload": payload};
+  Map<String, Object?> toJson() =>
+      nonNullPayloadJson({"type": type.name}, payload);
 }
 
 /// @category Common */
@@ -151,7 +154,8 @@ class PongMessage extends Message {
   MessageType get type => MessageType.pong;
   final Map<String, Object?>? payload;
   @override
-  Map<String, Object?> toJson() => {"type": type.name, "payload": payload};
+  Map<String, Object?> toJson() =>
+      nonNullPayloadJson({"type": type.name}, payload);
 }
 
 /// @category Common */
@@ -339,6 +343,16 @@ abstract class Message {
   String? get id => null;
 
   Map<String, Object?> toJson();
+}
+
+// Add a `payload` to the json message only if it is not null.
+// Some websocket servers will consider a `null` payload as an invalid message
+Map<String, Object?> nonNullPayloadJson(
+    Map<String, Object?> json, Map<String, Object?>? payload) {
+  if (payload != null) {
+    json["payload"] = payload;
+  }
+  return json;
 }
 
 /// Checks if the provided value is a message.
